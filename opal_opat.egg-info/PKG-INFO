@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: opal-opat
+Version: 0.1
+Summary: The opat OPAL Plugin
+Home-page: http://opal.openhealthcare.org.uk/
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: LICENSE
+Description: This is opat - an [OPAL](https://github.com/openhealthcare/opal) plugin.
+        
+Platform: UNKNOWN
