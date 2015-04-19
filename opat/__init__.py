@@ -11,7 +11,10 @@ class OpatPlugin(OpalPlugin):
     """
     urls = urlpatterns
     javascripts = {
-        # Add your javascripts here!
+        'opal.controllers': [
+            'js/opat/controllers/opat_referral.js',
+            'js/opat/controllers/opat_discharge.js'
+        ],
         'opal.opat': [
             # 'js/opat/app.js',
             # 'js/opat/controllers/larry.js',
@@ -41,11 +44,11 @@ class OpatPlugin(OpalPlugin):
                 'default': {
                     'enter': {
                         'controller': 'OPATReferralCtrl',
-                        'template'  : '/templates/modals/opat_referral.html/'
+                        'template'  : '/opat/templates/modals/opat_referral.html/'
                     },
                     'exit': {
                         'controller': 'OPATDischargeCtrl',
-                        'template'  : '/templates/modals/discharge_opat_episode.html/'
+                        'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
                     }
                 }
             },            
