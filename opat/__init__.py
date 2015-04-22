@@ -1,8 +1,7 @@
 """
 Plugin definition for the opat OPAL plugin
 """
-from opal.utils import OpalPlugin
-
+from opal.core.plugins import OpalPlugin
 from opat.urls import urlpatterns
 
 class OpatPlugin(OpalPlugin):
