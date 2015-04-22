@@ -2,7 +2,7 @@
 Views for the opat OPAL Plugin
 """
 from django.views.generic import TemplateView
-from opal.utils.views import LoginRequiredMixin
+from opal.core.views import LoginRequiredMixin
 
 class DischargeOpatEpisodeTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'discharge_opat_episode_modal.html'
