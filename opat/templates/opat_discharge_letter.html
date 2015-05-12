@@ -1,0 +1,54 @@
+<p>
+  <b>
+    Indication for OPAT:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="diagnosis in episode.diagnosis">
+    [[ diagnosis.condition ]]
+  </li>
+</ul>
+<p>
+  <b>
+    PMH:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="cond in episode.past_medical_history">
+    [[ cond.condition ]]
+  </li>
+</ul>
+
+<p>
+  <b>
+    Allergies:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="allergy in episode.allergies">
+    [[ allergy.drug ]]
+  </li>
+</ul>
+
+<p>
+  <b>
+    Antimicrobials:
+  </b>
+</p>
+<ul>
+  <li ng-repeat="drug in episode.antimicrobial">
+    [[ drug.drug ]], [[ drug.dose ]], [[ drug.frequency ]], [[ drug.route ]], [[ drug.delivered_by ]]
+  </li>
+</ul>
+
+<p>
+  <b>
+    Current vascular access::
+  </b>
+</p>
+<ul>
+  <li ng-repeat="line in episode.line">
+    [[ line.line_type ]], [[ line.insertion_datetime | shortDate ]], [[ line.external_length ]], [[ line.special_instructions ]]
+  </li>
+</ul>
+

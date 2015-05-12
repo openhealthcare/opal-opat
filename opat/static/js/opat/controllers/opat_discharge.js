@@ -22,7 +22,6 @@ controllers.controller(
 			    $scope[name + '_list'] = options[name];
 		    };
 	    };        
-
         
         // Make sure that the episode's tagging item is an instance not an object
         $scope.ensure_tagging = function(episode){
@@ -134,7 +133,6 @@ controllers.controller(
             var tagging = $scope.episode.tagging[0].makeCopy();
             tagging.opat_current = false;
             tagging.opat_followup = false;
-            
             
             updatedmeta = meta.makeCopy();
             

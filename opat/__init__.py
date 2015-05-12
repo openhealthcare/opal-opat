@@ -20,6 +20,10 @@ class OpatPlugin(OpalPlugin):
             # 'js/opat/services/larry.js',
         ]
     }
+    actions = (
+        'actions/next_stage.html',
+        'actions/opat_discharge_summary.html'
+    )
 
     def restricted_teams(self, user):
         """
