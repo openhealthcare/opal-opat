@@ -37,7 +37,9 @@
 </p>
 <ul>
   <li ng-repeat="drug in episode.antimicrobial">
-    [[ drug.drug ]], [[ drug.dose ]], [[ drug.frequency ]], [[ drug.route ]], [[ drug.delivered_by ]]
+    [[ drug.drug ]] [[ drug.dose ]] [[ drug.frequency ]] delivered by
+    [[ drug.delivered_by ]] started on [[ drug.start_date | shortDate ]]
+    due to finish on [[ drug.end_date | shortDate ]]
   </li>
 </ul>
 
@@ -48,7 +50,12 @@
 </p>
 <ul>
   <li ng-repeat="line in episode.line">
-    [[ line.line_type ]], [[ line.insertion_datetime | shortDate ]], [[ line.external_length ]], [[ line.special_instructions ]]
+    [[ line.line_type ]] - [[ line.site ]] Inserted on [[ line.insertion_datetime | shortDate ]].
+    External length at insertion [[ line.external_length ]].
   </li>
 </ul>
 
+<p><b>OPAT Plan</b></p>
+<p>
+  [[ episode.opat_review[0].opat_plan ]]
+</p>
