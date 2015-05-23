@@ -45,7 +45,7 @@
 
 <p>
   <b>
-    Current vascular access::
+    Current vascular access:
   </b>
 </p>
 <ul>
@@ -58,4 +58,14 @@
 <p><b>OPAT Plan</b></p>
 <p>
   [[ episode.opat_review[0].opat_plan ]]
+</p>
+
+<p><b>Observations</b></p>
+<p>
+  Date: [[episode.observation[0].datetime | shortDate ]] [[ episode.observation[0].datetime | hhmm ]]<br />
+  BP: [[episode.observation[0].bp_systolic]]/[[episode.observation[0].bp_diastolic]]<br />
+  Pulse: [[episode.observation[0].pulse]]<br />
+  RR: [[episode.observation[0].resp_rate]]<br />
+  Sp02: [[episode.observation[0].sp02]]<br />
+  Temp: [[episode.observation[0].temperature]]
 </p>
