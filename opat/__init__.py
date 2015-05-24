@@ -1,10 +1,10 @@
 """
 Plugin definition for the opat OPAL plugin
 """
-from opal.core.plugins import OpalPlugin
+from opal.core import plugins
 from opat.urls import urlpatterns
 
-class OpatPlugin(OpalPlugin):
+class OpatPlugin(plugins.OpalPlugin):
     """
     Main entrypoint to expose this plugin to our OPAL application.
     """
@@ -63,3 +63,6 @@ class OpatPlugin(OpalPlugin):
         by our plugin.
         """
         return {}
+
+
+plugins.register(OpatPlugin)
