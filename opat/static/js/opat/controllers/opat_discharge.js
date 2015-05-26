@@ -26,9 +26,7 @@ controllers.controller(
         // Make sure that the episode's tagging item is an instance not an object
         $scope.ensure_tagging = function(episode){
             if(!$scope.episode.tagging[0].makeCopy){
-                $scope.episode.tagging[0] = $scope.episode.newItem('tagging',{
-                    column: $rootScope.fields.tagging }
-                                                                  )
+                $scope.episode.tagging[0] = $scope.episode.newItem('tagging')
             }
             return
         };
@@ -38,7 +36,7 @@ controllers.controller(
         // singleton. now it just returns a new metadata instance. 
         // 
         $scope.get_meta = function(){
-            return $scope.episode.newItem('opat_meta', {column: $rootScope.fields.opat_meta});
+            return $scope.episode.newItem('opat_meta');
         }
         
         // 
@@ -136,22 +134,27 @@ controllers.controller(
             
             updatedmeta = meta.makeCopy();
             
-            updatedmeta.review_date = $scope.meta.review_date;
+            updatedmeta.review_date       = $scope.meta.review_date;
             updatedmeta.treatment_outcome = $scope.meta.outcome;
-            updatedmeta.deceased = $scope.meta.died;
-            updatedmeta.cause_of_death = $scope.meta.cause_of_death;
-            updatedmeta.death_category = $scope.meta.death_category;
-            updatedmeta.readmitted = $scope.meta.readmitted;
+            updatedmeta.deceased          = $scope.meta.died;
+            updatedmeta.cause_of_death    = $scope.meta.cause_of_death;
+            updatedmeta.death_category    = $scope.meta.death_category;
+            updatedmeta.readmitted        = $scope.meta.readmitted;
             updatedmeta.treatment_outcome = $scope.meta.outcome;
-            updatedmeta.notes = $scope.meta.notes;
+            updatedmeta.notes             = $scope.meta.notes;
+
+            ep = $scope.episode.makeCopy();
+            ep.discharge_date = new Date();
             
             // Now let's save
-            meta.save(updatedmeta).then(function(){
-                $scope.episode.tagging[0].save(tagging).then(function(){
-                    growl.success('Completed treatment: ' + episode.demographics[0].name)
-                    $modalInstance.close('discharged');
-                });
-            });            
+            $q.all([
+                meta.save(updatedmeta),
+                $scope.episode.tagging[0].save(tagging),
+                $scope.episode.save(ep)
+            ]).then(function(){
+                growl.success('Completed treatment: ' + episode.demographics[0].name);
+                $modalInstance.close('discharged');
+            });
         };
 
         //
