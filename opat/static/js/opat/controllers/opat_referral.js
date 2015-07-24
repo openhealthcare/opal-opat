@@ -47,17 +47,20 @@ controllers.controller(
             //
             var mrsa = episode.newItem('microbiology_test');
             var vte = episode.newItem('microbiology_test');
+            
+            episode.save(ep).then(function(){
+                $q.all([
+                    episode.tagging[0].save(teams),
+                    episode.location[0].save(location),
+                    mrsa.save({test: 'MRSA PCR'}),
+                    vte.save({test: 'VTE Assessment'})
+                ]).then(function(){
+                    episode.active = true;
+                    $modalInstance.close(episode);
+                });
+            });
 
-            $q.all([
-                episode.save(ep),
-                episode.tagging[0].save(teams),
-                episode.location[0].save(location),
-                mrsa.save({test: 'MRSA PCR'}),
-                vte.save({test: 'VTE Assessment'})
-            ]).then(function(){
-                episode.active = true;
-                $modalInstance.close(episode);
-            });                        
+
         };
 
         // 
