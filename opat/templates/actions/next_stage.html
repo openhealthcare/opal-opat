@@ -1,4 +1,4 @@
-<p ng-hide="ward_round" ng-show="episode.category == 'OPAT'">
+<p ng-show="episode.category == 'OPAT' && !ward_round">
   <button 
      ng-hide="profile.readonly"
      ng-click="dischargeEpisode(episode)"
