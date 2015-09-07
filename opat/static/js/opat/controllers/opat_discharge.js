@@ -116,7 +116,7 @@ controllers.controller(
             // Now let's save
             meta.save(updatedmeta).then(function(){
                 $scope.episode.tagging[0].save(tagging).then(function(){
-                    growl.success('Switched to Oral: ' + episode.demographics[0].name)
+                    growl.success('Moved to Follow up: ' + episode.demographics[0].name)
                     $modalInstance.close('discharged');
                 });
             });
