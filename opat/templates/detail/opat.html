@@ -17,6 +17,10 @@
   {% record_panel models.MicrobiologyTest %}
   {% record_panel models.Line %}
   {% record_panel models.OPATLineAssessment %}
-  {% record_panel models.OPATReview %}
   {% record_panel models.OPATOutstandingIssues %}
+{% endblock %}
+{% block under_split_cols %}
+  <div class="col-md-12">
+    {% record_panel models.OPATReview %}
+  </div>
 {% endblock %}
