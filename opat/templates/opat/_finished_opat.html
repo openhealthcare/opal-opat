@@ -1,21 +1,10 @@
-<div class="form-group">
-  <label class="control-label col-sm-3">Treatment Outcome</label>
-  <div class="col-sm-8">
-    <select class="form-control" ng-model="meta.outcome">
-      <option>Cured</option>
-      <option>Stable</option>
-      <option>Progressed, due to emergence of new pathogen(s)</option>
-      <option>Progressed, due to emergence of resistance in pathogen(s) being treated</option>
-      <option>Progressed, other</option>
-    </select>
-  </div>
-</div>
-<div class="form-group">
-  <label class="control-label col-sm-3">Died?</label>
-  <div class="col-sm-8">
-	<input class="" type="checkbox" ng-model="meta.died">
-  </div>
-</div>
+{% load forms %}
+
+{% select label="Patient Outcome" model="meta.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
+{% select label="Opat Outcome" model="meta.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
+
+{% checkbox model="meta.died" label="Died?" %}
+
 <div class="form-group" ng-show="meta.died">
   <label class="control-label col-sm-3">Death Category</label>
   <div class="col-sm-8">
@@ -26,18 +15,10 @@
     </select>
   </div>
 </div>
-<div class="form-group" ng-show="meta.died">
-  <label class="control-label col-sm-3">Cause of death</label>
-  <div class="col-sm-8">
-	<input class="form-control" ng-model="meta.cause_of_death">
-  </div>
-</div>
-<div class="form-group">
-  <label class="control-label col-sm-3">Readmitted?</label>
-  <div class="col-sm-8">
-	<input class="" type="checkbox" ng-model="meta.readmitted">
-  </div>
-</div>
+
+{% input model="meta.cause_of_death" show="meta.died" label="Cause of death"%}
+{% checkbox model="meta.readmitted" label="Readmitted" %}
+
 <div class="form-group" ng-show="meta.readmitted">
   <label class="control-label col-sm-3">Readmission Cause</label>
   <div class="col-sm-8">
@@ -50,7 +31,7 @@
   </div>
 </div>
 <div class="form-group">
-  <label class="control-label col-sm-3">notes</label>
+  <label class="control-label col-sm-3">Notes</label>
   <div class="col-sm-8">
 	<textarea class="form-control" ng-model="meta.notes" rows="5"></textarea>
   </div>

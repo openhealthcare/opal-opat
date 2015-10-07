@@ -145,12 +145,20 @@ controllers.controller(
 
             ep = $scope.episode.makeCopy();
             ep.discharge_date = new Date();
+
+            var outcome = $scope.episode.newItem('opat_outcome');
+            var outcomesdata = {
+                patient_outcome: $scope.meta.patient_outcome,
+                opat_outcome   : $scope.meta.opat_outcome,
+                outcome_stage  : 'Completed Therapy'
+            }
             
             // Now let's save
             $q.all([
                 meta.save(updatedmeta),
                 $scope.episode.tagging[0].save(tagging),
-                $scope.episode.save(ep)
+                $scope.episode.save(ep),
+                outcome.save(outcomesdata)
             ]).then(function(){
                 growl.success('Completed treatment: ' + episode.demographics[0].name);
                 $modalInstance.close('discharged');

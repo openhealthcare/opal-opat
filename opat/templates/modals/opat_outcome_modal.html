@@ -2,19 +2,25 @@
 {% load forms %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <div class="form-group">
-      <label class="control-label col-sm-3">Treatment Outcome</label>
-      <div class="col-sm-8">
-        <select class="form-control" ng-model="editing.treatment_outcome">
-          <option>Cured</option>
-          <option>Stable</option>
-          <option>Progressed, due to emergence of new pathogen(s)</option>
-          <option>Progressed, due to emergence of resistance in pathogen(s) being treated</option>
-          <option>Progressed, other</option>
-          <option>Never treated by OPAT</option>
-        </select>
-      </div>
-    </div>
+    <input type="hidden" ng-init="editing.outcome_stage = 'OPAT Review'" ng-model="editing.outcome_stage" />
+
+{% select label="Patient Outcome" model="editing.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
+{% select label="Opat Outcome" model="editing.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
+
+    <!-- <div class="form-group"> -->
+    <!--   <label class="control-label col-sm-3">Treatment Outcome</label> -->
+    <!--   <div class="col-sm-8"> -->
+    <!--     <select class="form-control" ng-model="editing.treatment_outcome"> -->
+    <!--       <option>Cured</option> -->
+    <!--       <option>Stable</option> -->
+    <!--       <option>Progressed, due to emergence of new pathogen(s)</option> -->
+    <!--       <option>Progressed, due to emergence of resistance in pathogen(s) being treated</option> -->
+    <!--       <option>Progressed, other</option> -->
+    <!--       <option>Never treated by OPAT</option> -->
+    <!--     </select> -->
+    <!--   </div> -->
+    <!-- </div> -->
+
     {% checkbox label="Died?" model="editing.died" %}
     <div class="form-group" ng-show="editing.died">
       <label class="control-label col-sm-3">Death Category</label>
@@ -26,7 +32,7 @@
         </select>
       </div>
     </div>
-    {% input label="Cause of death" model="editing.cause_of_death" %}
+    {% input label="Cause of death" model="editing.cause_of_death" show="editing.died"%}
     {% checkbox label="Readmitted?" model="editing.readmitted" %}
     <div class="form-group" ng-show="editing.readmitted">
       <label class="control-label col-sm-3">Readmission Cause</label>
