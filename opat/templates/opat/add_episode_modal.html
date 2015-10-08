@@ -1,3 +1,4 @@
+{% load forms %}
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()">×</button>
   <h3>
@@ -35,8 +36,10 @@
       </div>
     </div>
 
-    <input type="hidden" value="OPAT" ng-model="editing.location.category" />
-
+    {% select model="editing.location.opat_referral_team" label="Referring Team" lookuplist="speciality_list" %}
+    {% input model="editing.location.opat_referral_consultant" label="Referring Consultant" %}
+    
+    
   </form>
 </div>
 <div class="modal-footer">
