@@ -131,7 +131,7 @@
 
   <!-- OPAT Follow up initial state -->
   <div ng-show="episode.tagging[0].opat_followup && meta.iv == null && meta.completed == null">
-    <p>This patient has completed Oral treatment. What's the reason for that ?</p>
+    <p class="lead text-center">This patient has completed Oral treatment. What's the reason for that ?</p>
     <center>
       <button class="btn btn-primary btn-lg" ng-click="meta.iv = true">Back to IV Therapy</button>
       <button class="btn btn-primary btn-lg" ng-click="meta.completed = true">Completed OPAT care</button>
@@ -140,7 +140,7 @@
 
   <!-- OPAT Back to IV -->
   <div ng-show="episode.tagging[0].opat_followup && meta.iv">
-    <p>The patient will go back to OPAT Current</p>
+    <p class="lead text-center">The patient will go back to OPAT Referrals</p>
 
     <form class="form-horizontal">
       {% select label="Reason for return to IVs" model="meta.reason" lookuplist="['Intolarance of agents', 'Progression of infection', 'New infection', 'Other']" %}
@@ -148,7 +148,7 @@
     </form>
 
     <center>
-      <button class="btn btn-warning btn-lg" 
+      <button class="btn btn-primary btn-lg" 
               ng-click="back_to_iv()">Confirm</button>
     </center>
   </div>

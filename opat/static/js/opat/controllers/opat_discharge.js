@@ -5,7 +5,7 @@ controllers.controller(
     'OPATDischargeCtrl',
     function($scope, $modalInstance, $rootScope, $q,
              growl,
-             Item,
+             Item, CopyToCategory,
              options, episode, tags){
 
         var opat_rejection = $rootScope.fields['opat_rejection'];
@@ -212,25 +212,43 @@ controllers.controller(
         //
         // The patient is being removed from the follow up list because they're
         // going back to IV
+        //
+        // This means that we create a whole new OPAT episode for them ! 
         // 
         $scope.back_to_iv = function(){
             var meta = $scope.get_meta();
             $scope.ensure_tagging($scope.episode);
             var tagging = $scope.episode.tagging[0].makeCopy();
-            tagging.opat_current = true;
+            
+            tagging.opat_current = false;
             tagging.opat_followup = false;
             updatedmeta = meta.makeCopy();
             updatedmeta.reason_for_stopping = $scope.meta.reason;
             updatedmeta.unplanned_stop_reason = $scope.meta.unplanned_stop;
             updatedmeta.stopping_iv_details = $scope.meta.details;
 
-            // Now let's save
-            meta.save(updatedmeta).then(function(){
-                $scope.episode.tagging[0].save(tagging).then(function(){
-                    growl.success('Moved back to IVs: ' + episode.demographics[0].name)
-                    $modalInstance.close('discharged');
+            $q.all([
+                meta.save(updatedmeta),
+                $scope.episode.tagging[0].save(tagging)
+            ]).then(function(){
+                CopyToCategory($scope.episode.id, 'OPAT').then(function(episode){
+                    var newtagging = episode.tagging[0].makeCopy();
+                    var locationdata = episode.location[0].makeCopy();
+                    newtagging.opat = true;
+                    newtagging.opat_referrals = true;
+                    locationdata.opat_referral_route = 'From OPAT Follow Up';
+                    locationdata.opat_referral_team = 'OPAT Team';
+                    locationdata.opat_referral = new Date();
+                    $q.all([
+                        episode.tagging[0].save(newtagging),
+                        episode.location[0].save(locationdata)
+                    ]).then(function(){
+                        growl.success(episode.demographics[0].name + ' has been moved back to OPAT referrals');
+                        $modalInstance.close('discharged');                        
+                    })
                 });
             });
+            
         }
         
         
