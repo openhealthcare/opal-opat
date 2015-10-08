@@ -16,6 +16,35 @@ controllers.controller(
             rejection: {date: moment().format('YYYY-MM-DD')}
         };
 
+        $scope.qc = {
+            no_allergies: null,
+            consultant: null,
+            referring_team: null,
+            confirmed: false,
+
+            referral: function(){
+                if($scope.episode.location.opat_referral_team || ($scope.qc.referring_team != null && $scope.qc.confirmed)){
+                    return true
+                }
+                if($scope.episode.location.opat_referral_consultant || ($scope.qc.consultant != null && $scope.qc.confirmed)){
+                    return true
+                }
+                return false
+            },
+            allergies: function(){
+                if($scope.episode.allergies.length > 0){
+                    return true
+                }
+                return $scope.qc.no_allergies != null;
+            },
+            fails: function(){
+                return !$scope.qc.referral() || !$scope.qc.allergies()
+            },
+            passes: function(){
+                return !$scope.qc.fails();
+            }
+        };
+        
         // Put all of our lookuplists in scope.
 	    for (var name in options) {
 		    if (name.indexOf('micro_test') != 0) {
@@ -44,16 +73,31 @@ controllers.controller(
         // We need to update their tagging data.
         $scope.accept = function(){
             if(!$scope.episode.tagging[0].makeCopy){
-                $scope.episode.tagging[0] = $scope.episode.newItem('tagging',{
-                    column: {name: 'tagging', fields: [] }
-                })
+                $scope.episode.tagging[0] = $scope.episode.newItem('tagging')
             }
             var tagging = $scope.episode.tagging[0].makeCopy();
             tagging.opat_referrals = false;
             tagging.opat_current = true;
             tagging.opat = true;
 
-            $scope.episode.tagging[0].save(tagging).then(function(){
+            var saves = [$scope.episode.tagging[0].save(tagging)];
+
+            if($scope.qc.no_allergies == true){
+                var allergy = $scope.episode.newItem('allergies');
+                saves.push(allergy.save({drug: 'No known allergies'}));
+            }
+            if($scope.qc.consultant || $scope.qc.referring_team){
+                var data = $scope.episode.location[0].makeCopy();
+                if($scope.qc.referring_team){
+                    data.opat_referral_team = $scope.qc.referring_team;
+                }
+                if($scope.qc.consultant){
+                    data.opat_referral_consultant = $scope.qc.consultant;
+                }
+                saves.push($scope.episode.location[0].save(data));
+            }
+
+            $q.all(saves).then(function(){
                 growl.success('Accepted: ' + episode.demographics[0].name)
                 $modalInstance.close('moved');
             });

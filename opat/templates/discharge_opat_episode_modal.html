@@ -18,8 +18,26 @@
     </center>
   </div>
 
+  <!-- Accepted but QC check -->
+  <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == true && qc.fails()">
+    <form class="form-horizontal">
+      <div ng-hide="qc.referral()">
+        <p class="lead text-center">This patient appears to have incomplete referral information</p>
+        {% input label="Referring consultant" model="qc.consultant" %}
+        {% select label="Referring team" model="qc.referring_team" lookuplist="speciality_list" %}
+        <center>
+          <button class="btn btn-primary btn-lg" ng-click="qc.confirmed = true">Confirm referral details</button>
+        </center>
+      </div>
+      <div ng-hide="qc.allergies()">
+        <p class="lead text-center">This patient appears to have <b>no allergies</b> - is that correct?</p>
+        {% checkbox label="No Allergies" model="qc.no_allergies" %}
+      </div>
+    </form>
+  </div>
+
   <!-- Accepted state -->
-  <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == true">
+  <div ng-show="episode.tagging[0].opat_referrals == true && meta.accepted == true && qc.passes()">
     <p class="lead">The patient will now be transferred to the <b>OPAT Current</b> List</p>
     <center>
       <button class="btn btn-primary btn-lg" ng-click="accept()">Confirm</button>
@@ -58,7 +76,7 @@
     <center>
       <p>
         <button class="btn btn-secondary btn-lg" 
-              ng-click="reject()">
+                ng-click="reject()">
           {% icon "fa-close" %}
           Reject
         </button>
@@ -69,7 +87,7 @@
   <!-- OPAT Current initial state -->
   <div ng-show="episode.tagging[0].opat_current && meta.oral == null && meta.completed == null">
     <center>
-    <p class="lead">This patient has <b>completed</b> IV Therapy. <br />What's the reason for that ?</p>
+      <p class="lead">This patient has <b>completed</b> IV Therapy. <br />What's the reason for that ?</p>
       <button class="btn btn-primary btn-lg" ng-click="meta.oral = true">Ongoing Follow Up</button>
       <button class="btn btn-primary btn-lg" ng-click="meta.completed = true">Completed OPAT care</button>
     </center>
@@ -97,7 +115,7 @@
       <div class="form-group">
         <label class="control-label col-sm-3">OPAT Review date</label>
         <div class="col-sm-8">
-	      <input class="form-control" type="text" ng-model="meta.review_date" 
+	  <input class="form-control" type="text" ng-model="meta.review_date" 
                  bs-datepicker data-autoclose="true" />
         </div>
       </div>
@@ -142,7 +160,7 @@
       <div class="form-group">
         <label class="control-label col-sm-3">OPAT Review date</label>
         <div class="col-sm-8">
-	      <input class="form-control" type="text" ng-model="meta.review_date" 
+	  <input class="form-control" type="text" ng-model="meta.review_date" 
                  bs-datepicker data-autoclose="true" />
         </div>
       </div>
