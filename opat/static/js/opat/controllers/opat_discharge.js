@@ -80,7 +80,13 @@ controllers.controller(
             tagging.opat_current = true;
             tagging.opat = true;
 
-            var saves = [$scope.episode.tagging[0].save(tagging)];
+            var locationdata = $scope.episode.location[0].makeCopy();
+            locationdata.opat_acceptance = moment();
+            
+            var saves = [
+                $scope.episode.tagging[0].save(tagging),
+                $scope.episode.location[0].save(locationdata)
+            ];
 
             if($scope.qc.no_allergies == true){
                 var allergy = $scope.episode.newItem('allergies');
