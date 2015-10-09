@@ -23,10 +23,10 @@ controllers.controller(
             confirmed: false,
 
             referral: function(){
-                if($scope.episode.location.opat_referral_team || ($scope.qc.referring_team != null && $scope.qc.confirmed)){
+                if($scope.episode.location[0].opat_referral_team || ($scope.qc.referring_team != null && $scope.qc.confirmed)){
                     return true
                 }
-                if($scope.episode.location.opat_referral_consultant || ($scope.qc.consultant != null && $scope.qc.confirmed)){
+                if($scope.episode.location[0].opat_referral_consultant || ($scope.qc.consultant != null && $scope.qc.confirmed)){
                     return true
                 }
                 return false
