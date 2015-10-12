@@ -56,8 +56,7 @@ controllers.controller(
         $scope.ensure_tagging = function(episode){
             if(!$scope.episode.tagging[0].makeCopy){
                 $scope.episode.tagging[0] = $scope.episode.newItem('tagging')
-            }
-            return
+            }            return
         };
 
         // 
@@ -162,13 +161,30 @@ controllers.controller(
             updatedmeta.reason_for_stopping = $scope.meta.reason;
             updatedmeta.unplanned_stop_reason = $scope.meta.unplanned_stop;
             updatedmeta.stopping_iv_details = $scope.meta.details;
+            updatedmeta.review_date       = $scope.meta.review_date;
+            updatedmeta.treatment_outcome = $scope.meta.outcome;
+            updatedmeta.deceased          = $scope.meta.died;
+            updatedmeta.cause_of_death    = $scope.meta.cause_of_death;
+            updatedmeta.death_category    = $scope.meta.death_category;
+            updatedmeta.readmitted        = $scope.meta.readmitted;
+            updatedmeta.treatment_outcome = $scope.meta.outcome;
+            updatedmeta.notes             = $scope.meta.notes;
+
+            var outcome = $scope.episode.newItem('opat_outcome');
+            var outcomesdata = {
+                patient_outcome: $scope.meta.patient_outcome,
+                opat_outcome   : $scope.meta.opat_outcome,
+                outcome_stage  : 'Completed Therapy'
+            }
 
             // Now let's save
-            meta.save(updatedmeta).then(function(){
-                $scope.episode.tagging[0].save(tagging).then(function(){
-                    growl.success('Moved to Follow up: ' + episode.demographics[0].name)
-                    $modalInstance.close('discharged');
-                });
+            $q.all([
+                outcome.save(outcomesdata),
+                meta.save(updatedmeta),
+                $scope.episode.tagging[0].save(tagging)
+            ]).then(function(){
+                growl.success('Moved to Follow up: ' + episode.demographics[0].name)
+                $modalInstance.close('discharged');
             });
         }
 

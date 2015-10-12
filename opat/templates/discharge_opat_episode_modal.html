@@ -85,7 +85,7 @@
   </div>
 
   <!-- OPAT Current initial state -->
-  <div ng-show="episode.tagging[0].opat_current && meta.oral == null && meta.completed == null">
+  <div ng-show="episode.tagging[0].opat_current && meta.oral == null && meta.completed == null && meta.accepted == null">
     <center>
       <p class="lead">This patient has <b>completed</b> IV Therapy. <br />What's the reason for that ?</p>
       <button class="btn btn-primary btn-lg" ng-click="meta.oral = true">Ongoing Follow Up</button>
@@ -99,6 +99,7 @@
 
     <form class="form-horizontal">
       {% include 'opat/_stopped_antibiotics.html' %}
+      {% include 'opat/_finished_opat.html' %}
     </form>
 
     <center>
