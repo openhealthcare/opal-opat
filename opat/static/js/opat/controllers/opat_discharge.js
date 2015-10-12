@@ -191,7 +191,7 @@ controllers.controller(
         // 
         // A patient has completed their OPAT therapy.
         // 
-        $scope.completed_therapy = function(){
+        $scope.completed_therapy = function(addendum){
             var meta = $scope.get_meta();
             $scope.ensure_tagging($scope.episode);
             var tagging = $scope.episode.tagging[0].makeCopy();
@@ -217,6 +217,10 @@ controllers.controller(
                 patient_outcome: $scope.meta.patient_outcome,
                 opat_outcome   : $scope.meta.opat_outcome,
                 outcome_stage  : 'Completed Therapy'
+            }
+            
+            if(addendum){
+                outcomesdata.outcome_stage += addendum;
             }
             
             // Now let's save
