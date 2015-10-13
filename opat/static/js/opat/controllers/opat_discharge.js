@@ -81,6 +81,14 @@ controllers.controller(
 
             var locationdata = $scope.episode.location[0].makeCopy();
             locationdata.opat_acceptance = moment();
+            if($scope.qc.consultant || $scope.qc.referring_team){
+                if($scope.qc.referring_team){
+                    locationdata.opat_referral_team = $scope.qc.referring_team;
+                }
+                if($scope.qc.consultant){
+                    locationdata.opat_referral_consultant = $scope.qc.consultant;
+                }
+            }
             
             var saves = [
                 $scope.episode.tagging[0].save(tagging),
@@ -90,16 +98,6 @@ controllers.controller(
             if($scope.qc.no_allergies == true){
                 var allergy = $scope.episode.newItem('allergies');
                 saves.push(allergy.save({drug: 'No known allergies'}));
-            }
-            if($scope.qc.consultant || $scope.qc.referring_team){
-                var data = $scope.episode.location[0].makeCopy();
-                if($scope.qc.referring_team){
-                    data.opat_referral_team = $scope.qc.referring_team;
-                }
-                if($scope.qc.consultant){
-                    data.opat_referral_consultant = $scope.qc.consultant;
-                }
-                saves.push($scope.episode.location[0].save(data));
             }
 
             $q.all(saves).then(function(){
