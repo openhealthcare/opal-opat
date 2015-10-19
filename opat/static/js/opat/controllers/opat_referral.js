@@ -162,7 +162,7 @@ controllers.controller(
                         message += list_name;
                         $scope.message = message;                        
                     }else{
-                        actually_make_new_episode();
+                        $scope.add_for_patient(patient);
                     }
                 }else{
                     actually_make_new_episode();
