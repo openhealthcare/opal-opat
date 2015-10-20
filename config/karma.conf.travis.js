@@ -12,6 +12,7 @@ module.exports = function(config){
             'angular-1.2.20/angular-resource.js',
             'angular-1.2.20/angular-cookies.js',
             'angular-1.2.20/angular-mocks.js',
+
             'angular-ui-utils-0.1.0/ui-utils.js',
             'angular-ui-bootstrap-0.10.0/ui-bootstrap-tpls.js',
 
@@ -29,6 +30,7 @@ module.exports = function(config){
             'angular-strap-2.3.1/modules/timepicker.tpl.js',
             'angular-strap-2.3.1/modules/typeahead.js',
             'angular-strap-2.3.1/modules/typeahead.tpl.js',
+
             'ngprogress-lite/ngprogress-lite.js',
             'jquery-1.11.0/jquery.js',
             'utils/underscore.js',
@@ -44,7 +46,7 @@ module.exports = function(config){
             'opal/controllers_module.js',
             'opal/controllers/*.js',
 
-            __dirname+'/../opat/static/js/opat/*.js',
+//            __dirname+'/../opat/static/js/opat/*.js',
             __dirname+'/../opat/static/js/opat/controllers/*.js',
             __dirname+'/../opat/static/js/test/*.js',
             
