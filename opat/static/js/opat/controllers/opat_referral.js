@@ -151,15 +151,17 @@ controllers.controller(
                     // Tell the user that this patient is already on the opat service
                     var list_name;
                     message = "Patient is already on the OPAT ";
-                    if(opat_episodes[0].tagging[0].opat_referrals){
-                        list_name = "Referrals list";
-                    }
-                    if(opat_episodes[0].tagging[0].opat_current){
-                        list_name = "Current list";
-                    }
-                    if(opat_episodes[0].tagging[0].opat_followup){
-                        list_name = "Follow Up list";
-                    }
+                    _.each(opat_episodes, function(e){
+                        if(e.tagging[0].opat_referrals){
+                            list_name = "Referrals list";
+                        }
+                        if(e.tagging[0].opat_current){
+                            list_name = "Current list";
+                        }
+                        if(e.tagging[0].opat_followup){
+                            list_name = "Follow Up list";
+                        }                        
+                    });
                     if(list_name){
                         message += list_name;
                         $scope.message = message;                        

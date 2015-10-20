@@ -51,16 +51,16 @@ describe('OPATReferralCtrl', function (){
         var patient;
         
         beforeEach(function(){
-           patient = {
-               active_episode_id: 1,
-               demographics: [{}],
-               episodes: {
-                   1: {
-                       category: 'OPAT',
-                       tagging: [{}],
-                   }
-               }
-           } 
+            patient = {
+                active_episode_id: 1,
+                demographics: [{}],
+                episodes: {
+                    1: {
+                        category: 'OPAT',
+                        tagging: [{}],
+                    }
+                }
+            } 
         });
 
         describe('when a patient is on a list', function (){
@@ -70,6 +70,18 @@ describe('OPATReferralCtrl', function (){
                 $scope.new_for_patient(patient);
                 var msg = 'Patient is already on the OPAT Referrals list';
                 expect($scope.message).toEqual(msg)
+            });
+            
+            describe('and has a previous opat episode that is not on a list', function() {
+
+                it('Should set the message', function () {
+                    patient.episodes[2] = angular.copy(patient.episodes[1]);
+                    patient.episodes[2].tagging[0].opat_referrals = true;
+                    $scope.new_for_patient(patient);
+                    var msg = 'Patient is already on the OPAT Referrals list';
+                    expect($scope.message).toEqual(msg)
+                });
+
             });
             
         });
