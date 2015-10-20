@@ -144,6 +144,7 @@ describe('OPATDischargeCtrl', function (){
                 id: 33
             }
             $httpBackend.expectPUT('/episode/33/', episode_data).respond('Yes');
+            $httpBackend.expectPOST('/api/v0.1/opat_outcome/').respond('Yes');
         });
 
         it('Should close the mdoal', function () {
