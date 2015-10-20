@@ -7,7 +7,7 @@ controllers.controller(
              growl,
              schema, options,
              Episode){
-        
+
         $scope.model = {
             hospital_number : null
         }
@@ -36,9 +36,9 @@ controllers.controller(
             //
             _.each(_.keys(teams), function(team){
                 if(teams[team]){ teams[team] = false };
-            })
+            });
 
-                ep.category = 'OPAT'
+            ep.category = 'OPAT'
             teams.opat = true;
             teams.opat_referrals = true;
             location.opat_referral = moment();
@@ -75,8 +75,10 @@ controllers.controller(
                     newPatient: $scope.new_patient,
                     newForPatient: $scope.new_for_patient,
                     error: function(){
-			            // This shouldn't happen, but we should probably handle it better
-			            alert('ERROR: More than one patient found with hospital number');
+			            // This shouldn't happen, but we should probably
+                        // handle it better
+                        msg = 'ERROR: More than one patient found with hospital number';
+			            alert(msg);
                         $modalInstance.close(null)
                     }
                 }

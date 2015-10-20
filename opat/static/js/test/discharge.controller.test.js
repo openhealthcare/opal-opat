@@ -4,90 +4,101 @@ describe('OPATDischargeCtrl', function (){
     var controller, growl;
     var episode, options, tags;
 
+    var columns = {
+        "default": [
+            {
+                name: 'demographics',
+                single: true,
+                fields: [
+                    {name: 'name', type: 'string'},
+                    {name: 'date_of_birth', type: 'date'},
+                ]},
+            {
+                name: 'location',
+                single: true,
+                fields: [
+                    {name: 'category', type: 'string'},
+                    {name: 'hospital', type: 'string'},
+                    {name: 'ward', type: 'string'},
+                    {name: 'bed', type: 'string'},
+                    {name: 'date_of_admission', type: 'date'},
+                    {name: 'tags', type: 'list'},
+                ]},
+            {
+                name: 'diagnosis',
+                single: false,
+                fields: [
+                    {name: 'condition', type: 'string'},
+                    {name: 'provisional', type: 'boolean'},
+                ]},
+            {
+                name: 'tagging',
+                single: true,
+                fields: [
+                    { name: 'mine', type: 'boolean' }
+                ]
+            },
+            {
+                name: 'opat_meta',
+                single: false,
+                fields: [
+                    { name: 'review_date', type: 'date' },
+                    { name: 'reason_for_stopping', type: 'string' },
+                    { name: 'unplanned_stop_reason', type: 'string' },
+                    { name: 'stopping_iv_details', type: 'string' },
+                    { name: 'treatment_outcome', type: 'string' },
+                    { name: 'deceased', type: 'boolean' },
+                    { name: 'death_category', type: 'string' },
+                    { name: 'cause_of_death', type: 'string' },
+                    { name: 'readmitted', type: 'boolean' },
+                    { name: 'readmission_cause', type: 'string' },
+                    { name: 'notes', type: 'text' },
+                ]
+            },
+            {
+                name  : 'opat_outcome',
+                single: false,
+                fields: [
+                ]
+            }
+            
+        ]
+    };
+
     beforeEach(module('opal.controllers'));
+
     
-    beforeEach(inject(function($injector){
-        $rootScope   = $injector.get('$rootScope');
-        $scope       = $rootScope.$new();
-        $modal       = $injector.get('$modal');
-        $controller  = $injector.get('$controller');
-        $httpBackend = $injector.get('$httpBackend');
-        Episode      = $injector.get('Episode');
-        Item         = $injector.get('Item');
+    beforeEach(function(){
+        inject(function($injector){
+            $rootScope   = $injector.get('$rootScope');
+            $scope       = $rootScope.$new();
+            $modal       = $injector.get('$modal');
+            $controller  = $injector.get('$controller');
+            $httpBackend = $injector.get('$httpBackend');
+            Episode      = $injector.get('Episode');
+            Item         = $injector.get('Item');
 
-        columns = {
-            "default": [
-                {
-                    name: 'demographics',
-                    single: true,
-                    fields: [
-                        {name: 'name', type: 'string'},
-                        {name: 'date_of_birth', type: 'date'},
-                    ]},
-                {
-                    name: 'location',
-                    single: true,
-                    fields: [
-                        {name: 'category', type: 'string'},
-                        {name: 'hospital', type: 'string'},
-                        {name: 'ward', type: 'string'},
-                        {name: 'bed', type: 'string'},
-                        {name: 'date_of_admission', type: 'date'},
-                        {name: 'tags', type: 'list'},
-                    ]},
-                {
-                    name: 'diagnosis',
-                    single: false,
-                    fields: [
-                        {name: 'condition', type: 'string'},
-                        {name: 'provisional', type: 'boolean'},
-                    ]},
-                {
-                    name: 'tagging',
-                    single: true,
-                    fields: [
-                        { name: 'mine', type: 'boolean' }
-                    ]
-               },
-                {
-                    name: 'opat_meta',
-                    single: false,
-                    fields: [
-                        { name: 'review_date', type: 'date' },
-                        { name: 'reason_for_stopping', type: 'string' },
-                        { name: 'unplanned_stop_reason', type: 'string' },
-                        { name: 'stopping_iv_details', type: 'string' },
-                        { name: 'treatment_outcome', type: 'string' },
-                        { name: 'deceased', type: 'boolean' },
-                        { name: 'death_category', type: 'string' },
-                        { name: 'cause_of_death', type: 'string' },
-                        { name: 'readmitted', type: 'boolean' },
-                        { name: 'readmission_cause', type: 'string' },
-                        { name: 'notes', type: 'text' },
-                    ]
-                }
-            ]
-        };
-        fields = {}
-        _.each(columns.default, function(c){fields[c.name] = c});
-        $rootScope.fields = fields;
+            fields = {}
+            _.each(columns.default, function(c){fields[c.name] = c});
+            $rootScope.fields = fields;
 
-        $modalInstance = $modal.open({template: 'Not a real template'});
-        episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{}]});
-        options = {};
-        tags    = {};
-        growl   = {success: jasmine.createSpy('Growl.success')}
-        
-        controller = $controller('OPATDischargeCtrl', {
-            $scope        : $scope,
-            $modalInstance: $modalInstance,
-            episode       : episode,
-            options       : options,
-            tags          : tags,
-            growl         : growl
-        });
+            $modalInstance = $modal.open({template: 'Not a real template'});
+            episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{}]});
+            options = {};
+            tags    = {};
+            growl   = {success: jasmine.createSpy('Growl.success')}
+            
+            controller = $controller('OPATDischargeCtrl', {
+                $scope        : $scope,
+                $modalInstance: $modalInstance,
+                episode       : episode,
+                options       : options,
+                tags          : tags,
+                growl         : growl
+            });
 
-    }));
+        })
+    });
 
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();

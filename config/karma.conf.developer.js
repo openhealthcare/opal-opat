@@ -1,7 +1,7 @@
 module.exports = function(config){
     config.set({
         frameworks: ['jasmine'],
-        browsers: ['Firefox'],
+        browsers: ['PhantomJS'],
         basePath:  '/usr/lib/ohc/opal/opal/static/js',
 
         files: [
@@ -12,15 +12,19 @@ module.exports = function(config){
             'angular-1.2.20/angular-resource.js',
             'angular-1.2.20/angular-cookies.js',
             'angular-1.2.20/angular-mocks.js',
+
             'angular-ui-utils-0.1.0/ui-utils.js',
             'angular-ui-bootstrap-0.10.0/ui-bootstrap-tpls.js',
 
+            "angular-strap-2.3.1/modules/compiler.js",
             'angular-strap-2.3.1/modules/tooltip.js',
             'angular-strap-2.3.1/modules/tooltip.tpl.js',
             'angular-strap-2.3.1/modules/dimensions.js',
             'angular-strap-2.3.1/modules/parse-options.js',
+            'angular-strap-2.3.1/modules/date-formatter.js',
             'angular-strap-2.3.1/modules/date-parser.js',
             'angular-strap-2.3.1/modules/datepicker.js',
+            'angular-strap-2.3.1/modules/popover.js',
             'angular-strap-2.3.1/modules/datepicker.tpl.js',
             'angular-strap-2.3.1/modules/timepicker.js',
             'angular-strap-2.3.1/modules/timepicker.tpl.js',
@@ -41,7 +45,7 @@ module.exports = function(config){
             'opal/controllers_module.js',
             'opal/controllers/*.js',
 
-            __dirname+'/../opat/static/js/opat/*.js',
+//            __dirname+'/../opat/static/js/opat/*.js',
             __dirname+'/../opat/static/js/opat/controllers/*.js',
             __dirname+'/../opat/static/js/test/*.js',
             
