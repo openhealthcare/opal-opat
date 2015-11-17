@@ -1,11 +1,13 @@
-<p ng-show="episode.category == 'OPAT' && !ward_round">
+<span ng-show="episode.category == 'OPAT' && !ward_round">
+  <center>
   <button 
      ng-hide="profile.readonly"
      ng-click="dischargeEpisode(episode)"
-     class="btn btn-primary btn-sm">
+     class="btn btn-secondary btn-lg">
     <i class="glyphicon glyphicon-ok"></i>
     <span ng-show="episode.hasTag('opat_referrals')" >Accept / refuse</span>
     <span ng-show="episode.hasTag('opat_current')" >Completed IV</span>
     <span ng-show="episode.hasTag('opat_followup')" >Next</span> 
   </button>
-</p>
+  </center>
+</span>

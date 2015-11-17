@@ -1,7 +1,7 @@
 """
 Plugin definition for the opat OPAL plugin
 """
-from opal.core import plugins
+from opal.core import episodes, plugins
 from opat.urls import urlpatterns
 
 class OpatPlugin(plugins.OpalPlugin):
@@ -64,5 +64,9 @@ class OpatPlugin(plugins.OpalPlugin):
         """
         return {}
 
-
+    
 plugins.register(OpatPlugin)
+
+class OPATEpisode(episodes.EpisodeType):
+    name            = 'OPAT'
+    detail_template = 'detail/opat2.html'
