@@ -3,8 +3,8 @@
   <button 
      ng-hide="profile.readonly"
      ng-click="dischargeEpisode(episode)"
-     class="btn btn-secondary btn-lg">
-    <i class="glyphicon glyphicon-ok"></i>
+     class="btn btn-primary btn-lg">
+    <i class="fa fa-sitemap"></i>
     <span ng-show="episode.hasTag('opat_referrals')" >Accept / refuse</span>
     <span ng-show="episode.hasTag('opat_current')" >Completed IV</span>
     <span ng-show="episode.hasTag('opat_followup')" >Next</span> 

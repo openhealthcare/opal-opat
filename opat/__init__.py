@@ -42,19 +42,21 @@ class OpatPlugin(plugins.OpalPlugin):
         """
         Return any custom flows that our plugin may define
         """
+        flows = {
+            'enter': {
+                'controller': 'OPATReferralCtrl',
+                'template'  : '/opat/templates/modals/opat_referral.html/'
+            },
+            'exit': {
+                'controller': 'OPATDischargeCtrl',
+                'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
+            }
+        }
         return {
             'opat': {
-                'default': {
-                    'enter': {
-                        'controller': 'OPATReferralCtrl',
-                        'template'  : '/opat/templates/modals/opat_referral.html/'
-                    },
-                    'exit': {
-                        'controller': 'OPATDischargeCtrl',
-                        'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
-                    }
-                }
-            },            
+                'default': flows
+            },
+            'OPAT': flowso
         }
 
     def roles(self, user):
