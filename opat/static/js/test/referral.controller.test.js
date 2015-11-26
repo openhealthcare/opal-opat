@@ -65,7 +65,7 @@ describe('OPATReferralCtrl', function (){
             }
         });
 
-        describe('when a patient is on a list', function (){
+        fdescribe('when a patient is on a list', function (){
 
             it('Should set the message', function () {
                 patient.episodes[1].tagging[0].opat_referrals = true;
@@ -74,9 +74,9 @@ describe('OPATReferralCtrl', function (){
                 expect($scope.message).toEqual(msg)
             });
 
-            describe('and has a previous opat episode that is not on a list', function() {
+            fdescribe('and has a previous opat episode that is not on a list', function() {
 
-                it('Should set the message', function () {
+                fit('Should set the message', function () {
                     patient.episodes[2] = angular.copy(patient.episodes[1]);
                     patient.episodes[2].tagging[0].opat_referrals = true;
                     $scope.new_for_patient(patient);

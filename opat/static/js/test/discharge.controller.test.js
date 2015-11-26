@@ -1,6 +1,7 @@
 describe('OPATDischargeCtrl', function (){
+    "use strict"
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
-    var $rootScope, Episode, Item, fields;
+    var Episode, Item, $rootScope, fields;
     var controller, growl, columns;
     var episode, options, tags;
 
@@ -65,15 +66,33 @@ describe('OPATDischargeCtrl', function (){
                         { name: 'readmission_cause', type: 'string' },
                         { name: 'notes', type: 'text' },
                     ]
+                },
+                {
+                    name: 'opat_outcome',
+                    single: false,
+                    fields: [
+                        { name: 'review_date', type: 'date' },
+                        { name: 'reason_for_stopping', type: 'string' },
+                        { name: 'unplanned_stop_reason', type: 'string' },
+                        { name: 'stopping_iv_details', type: 'string' },
+                        { name: 'treatment_outcome', type: 'string' },
+                        { name: 'deceased', type: 'boolean' },
+                        { name: 'death_category', type: 'string' },
+                        { name: 'cause_of_death', type: 'string' },
+                        { name: 'readmitted', type: 'boolean' },
+                        { name: 'readmission_cause', type: 'string' },
+                        { name: 'notes', type: 'text' },
+                    ]
                 }
             ]
         };
-        fields = {}
+        fields = {};
         _.each(columns.default, function(c){fields[c.name] = c});
         $rootScope.fields = fields;
 
         $modalInstance = $modal.open({template: 'Not a real template'});
         episode = new Episode({id: 33, tagging: [{opat: true}], demographics: [{}]});
+        episode.$rootScope = $rootScope;
         options = {};
         tags    = {};
         growl   = {success: jasmine.createSpy('Growl.success')}
