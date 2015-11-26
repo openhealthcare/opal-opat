@@ -26,6 +26,8 @@ module.exports = function(config){
             'angular-strap-2.3.1/modules/timepicker.tpl.js',
             'angular-strap-2.3.1/modules/typeahead.js',
             'angular-strap-2.3.1/modules/typeahead.tpl.js',
+            "angulartics-0.17.2/angulartics.min.js",
+            "angulartics-0.17.2/angulartics-ga.min.js",
             'ngprogress-lite/ngprogress-lite.js',
             'jquery-1.11.0/jquery.js',
             'utils/underscore.js',
@@ -33,18 +35,19 @@ module.exports = function(config){
             'bower_components/angular-growl-v2/build/angular-growl.js',
             'bower_components/ment.io/dist/mentio.js',
             'bower_components/ment.io/dist/templates.js',
+            'bower_components/angular-ui-select/dist/select.js',
 
             'opal/utils.js',
+            'opal/directives.js',
+            'opal/filters.js',
             'opal/services_module.js',
             'opal/services/*.js',
             'opal/services/flow.js',
             'opal/controllers_module.js',
             'opal/controllers/*.js',
-
-            __dirname+'/../opat/static/js/opat/*.js',
             __dirname+'/../opat/static/js/opat/controllers/*.js',
             __dirname+'/../opat/static/js/test/*.js',
-            
+
         ],
 
         // Stolen from http://oligofren.wordpress.com/2014/05/27/running-karma-tests-on-browserstack/
@@ -52,9 +55,5 @@ module.exports = function(config){
         browserDisconnectTolerance : 1, // default 0
         browserNoActivityTimeout : 4*60*1000, //default 10000
         captureTimeout : 4*60*1000, //default 60000
-
-
-    })
-}
-
-
+    });
+};

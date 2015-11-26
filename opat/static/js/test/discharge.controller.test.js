@@ -1,11 +1,11 @@
 describe('OPATDischargeCtrl', function (){
     var $controller, $scope, $httpBackend, $modalInstance, $modal;
-    var Episode, Item;
-    var controller, growl;
+    var $rootScope, Episode, Item, fields;
+    var controller, growl, columns;
     var episode, options, tags;
 
     beforeEach(module('opal.controllers'));
-    
+
     beforeEach(inject(function($injector){
         $rootScope   = $injector.get('$rootScope');
         $scope       = $rootScope.$new();
@@ -77,7 +77,7 @@ describe('OPATDischargeCtrl', function (){
         options = {};
         tags    = {};
         growl   = {success: jasmine.createSpy('Growl.success')}
-        
+
         controller = $controller('OPATDischargeCtrl', {
             $scope        : $scope,
             $modalInstance: $modalInstance,
@@ -86,6 +86,7 @@ describe('OPATDischargeCtrl', function (){
             tags          : tags,
             growl         : growl
         });
+
 
     }));
 
@@ -98,21 +99,21 @@ describe('OPATDischargeCtrl', function (){
         expect($scope.episode).toBe(episode);
     });
 
-    
+
     describe('completed_therapy()', function (){
         var metavars;
 
         beforeEach(function(){
             metavars = {
                 review_date   : '22/12/1999',
-                outcome       : 'died',
+                outcome       : 'death',
                 died          : true,
                 cause_of_death: 'negligence',
                 death_category: 'preventable',
                 readmitted    : false,
-                outcome       : 'death',
-                notes         : 'whoops'
-            }
+                notes         : 'whoops',
+                infective_diagnosis: "Aspergillosis"
+            };
             $scope.meta = metavars;
             var meta2 = angular.copy(metavars);
             meta2.episode_id = 33;
@@ -121,6 +122,7 @@ describe('OPATDischargeCtrl', function (){
             meta2.deceased = true;
             delete meta2['outcome'];
             delete meta2['died'];
+            delete meta2['infective_diagnosis'];
 
             // Should save the metadata
             $httpBackend.expectPOST('/api/v0.1/opat_meta/', meta2).respond('Yes');
@@ -132,7 +134,15 @@ describe('OPATDischargeCtrl', function (){
                 discharge_date: moment().format('YYYY-MM-DD'),
                 id: 33
             }
+
+            var expectedPost = {
+              patient_outcome: undefined,
+              outcome_stage: 'Completed Therapy',
+              infective_diagnosis: metavars.infective_diagnosis,
+              episode_id: 33
+            };
             $httpBackend.expectPUT('/episode/33/', episode_data).respond('Yes');
+            $httpBackend.expectPOST('/api/v0.1/opat_outcome/', expectedPost).respond('Yes');
         });
 
         it('Should close the mdoal', function () {
@@ -141,7 +151,7 @@ describe('OPATDischargeCtrl', function (){
             $httpBackend.flush();
             expect($modalInstance.close).toHaveBeenCalledWith('discharged');
         });
-        
+
 
         it('Should send a growl message', function () {
             $scope.completed_therapy();
@@ -149,5 +159,5 @@ describe('OPATDischargeCtrl', function (){
             expect(growl.success).toHaveBeenCalled();
         });
     });
-    
+
 });
