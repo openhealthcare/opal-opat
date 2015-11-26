@@ -6,6 +6,7 @@
 
 {% select label="Patient Outcome" model="editing.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
 {% select label="Opat Outcome" model="editing.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
+{% select label="Primary Infective Diagnosis" model="editing.infective_diagnosis" lookuplist="opatinfectivediagnosis_list" other=True %}
 
     <!-- <div class="form-group"> -->
     <!--   <label class="control-label col-sm-3">Treatment Outcome</label> -->
