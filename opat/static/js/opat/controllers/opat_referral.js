@@ -36,9 +36,9 @@ controllers.controller(
             //
             _.each(_.keys(teams), function(team){
                 if(teams[team]){ teams[team] = false };
-            })
+            });
 
-                ep.category = 'OPAT'
+            ep.category = 'OPAT'
             teams.opat = true;
             teams.opat_referrals = true;
             location.opat_referral = moment();
@@ -75,8 +75,10 @@ controllers.controller(
                     newPatient: $scope.new_patient,
                     newForPatient: $scope.new_for_patient,
                     error: function(){
-			            // This shouldn't happen, but we should probably handle it better
-			            alert('ERROR: More than one patient found with hospital number');
+			            // This shouldn't happen, but we should probably
+                        // handle it better
+                        msg = 'ERROR: More than one patient found with hospital number';
+			            alert(msg);
                         $modalInstance.close(null)
                     }
                 }
@@ -114,52 +116,64 @@ controllers.controller(
         // Create a new episode for an existing patient
         //
         $scope.new_for_patient = function(patient){
+            var actually_make_new_episode = function(){
+                // Offer to import the data from this episode.
+				for (var eix in patient.episodes) {
+					patient.episodes[eix] = new Episode(patient.episodes[eix], schema);
+				};
+				modal = $modal.open({
+					templateUrl: '/templates/modals/copy_to_category.html/',
+					controller: 'CopyToCategoryCtrl',
+					resolve: {
+                        category: function() { return 'OPAT' },
+						patient: function() { return patient; },
+					}
+				}).result.then(
+                    function(result) {
+                        if(!_.isString(result)){
+                            $scope.tag_and_close(result);
+                            return
+                        };
+					    if (result == 'open-new') {
+						    // User has chosen to open a new episode
+                            $scope.add_for_patient(patient);
+					    } else {
+						    // User has chosen to reopen an episode, or cancelled
+						    $modalInstance.close(result);
+					    };
+				    },
+                    function(result){ $modalInstance.close(result); });
+            }
+
             if(patient.active_episode_id && _.keys(patient.episodes).length > 0){
                 opat_episodes = _.filter(patient.episodes, function(e){ return e.category == 'OPAT' });
                 if(opat_episodes.length > 0){
                     // Tell the user that this patient is already on the opat service
+                    var list_name;
                     message = "Patient is already on the OPAT ";
-                    if(opat_episodes[0].tagging[0].opat_referrals){
-                        message += "Referrals list";
+                    _.each(opat_episodes, function(e){
+                        if(e.tagging[0].opat_referrals){
+                            list_name = "Referrals list";
+                        }
+                        if(e.tagging[0].opat_current){
+                            list_name = "Current list";
+                        }
+                        if(e.tagging[0].opat_followup){
+                            list_name = "Follow Up list";
+                        }
+                    });
+                    if(list_name){
+                        message += list_name;
+                        $scope.message = message;
+                    }else{
+                        $scope.add_for_patient(patient);
                     }
-                    if(opat_episodes[0].tagging[0].opat_current){
-                        message += "Current list";
-                    }
-                    if(opat_episodes[0].tagging[0].opat_followup){
-                        message += "Follow Up list";
-                    }
-                    $scope.message = message;
                 }else{
-                    // Offer to import the data from this episode.
-				    for (var eix in patient.episodes) {
-					    patient.episodes[eix] = new Episode(patient.episodes[eix], schema);
-				    };
-				    modal = $modal.open({
-					    templateUrl: '/templates/modals/copy_to_category.html/',
-					    controller: 'CopyToCategoryCtrl',
-					    resolve: {
-                            category: function() { return 'OPAT' },
-						    patient: function() { return patient; },
-					    }
-				    }).result.then(
-                        function(result) {
-                            if(!_.isString(result)){
-                                $scope.tag_and_close(result);
-                                return
-                            };
-					        if (result == 'open-new') {
-						        // User has chosen to open a new episode
-                                $scope.add_for_patient(patient);
-					        } else {
-						        // User has chosen to reopen an episode, or cancelled
-						        $modalInstance.close(result);
-					        };
-				        },
-                        function(result){ $modalInstance.close(result); });
+                    actually_make_new_episode();
                 }
             }else{
                 $scope.add_for_patient(patient);
-            };
+            }
         };
 
         //

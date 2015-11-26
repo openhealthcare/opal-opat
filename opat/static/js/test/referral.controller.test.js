@@ -19,9 +19,9 @@ describe('OPATReferralCtrl', function (){
             Episode      = $injector.get('Episode');
             Item         = $injector.get('Item');
 
-            growl   = {success: jasmine.createSpy('Growl.success')}
-            fields = {}
-            _.each(columns.default, function(c){fields[c.name] = c});
+            growl   = {success: jasmine.createSpy('Growl.success')};
+            fields = {};
+            _.each(columns.default, function(c){fields[c.name] = c; });
             $rootScope.fields = fields;
 
             $modalInstance = $modal.open({template: 'Not a real template'});
@@ -34,7 +34,7 @@ describe('OPATReferralCtrl', function (){
                 options       : {}
             });
 
-        })
+        });
     });
 
     afterEach(function() {
@@ -47,7 +47,6 @@ describe('OPATReferralCtrl', function (){
         expect($scope.patient).toBe(null);
         expect($scope.message).toBe(null);
     });
-
 
     describe('new_for_patient()', function (){
         var patient;
@@ -62,10 +61,10 @@ describe('OPATReferralCtrl', function (){
                         tagging: [{}],
                     }
                 }
-            }
+            };
         });
 
-        fdescribe('when a patient is on a list', function (){
+        describe('when a patient is on a list', function (){
 
             it('Should set the message', function () {
                 patient.episodes[1].tagging[0].opat_referrals = true;
@@ -74,9 +73,9 @@ describe('OPATReferralCtrl', function (){
                 expect($scope.message).toEqual(msg)
             });
 
-            fdescribe('and has a previous opat episode that is not on a list', function() {
+            describe('and has a previous opat episode that is not on a list', function() {
 
-                fit('Should set the message', function () {
+                it('Should set the message', function () {
                     patient.episodes[2] = angular.copy(patient.episodes[1]);
                     patient.episodes[2].tagging[0].opat_referrals = true;
                     $scope.new_for_patient(patient);
@@ -85,9 +84,7 @@ describe('OPATReferralCtrl', function (){
                 });
 
             });
-
         });
 
     });
-
 });
