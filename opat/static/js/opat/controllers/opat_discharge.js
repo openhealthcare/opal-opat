@@ -109,7 +109,7 @@ controllers.controller(
 
         $scope.click_reject = function(){
             $scope.meta.accepted = false;
-            $scope.meta.review_date = moment().add(3, 'M')._d;
+            $scope.meta.review_date = moment().add(3, 'M').toDate();
             return
         }
         //
