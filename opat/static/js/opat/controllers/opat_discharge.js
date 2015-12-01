@@ -8,12 +8,13 @@ controllers.controller(
              Item, CopyToCategory,
              options, episode, tags){
 
+        var DATE_FORMAT = 'DD/MM/YYYY';
         var opat_rejection = $rootScope.fields['opat_rejection'];
 
         $scope.episode = episode;
         $scope.meta = {
             accepted: null,
-            rejection: {date: moment().format('YYYY-MM-DD')}
+            rejection: {date: moment().format(DATE_FORMAT)}
         };
 
         $scope.qc = {
@@ -134,10 +135,13 @@ controllers.controller(
             ]).then(function(){
                 // Doesn't auto update for OPAT as TAGGING is not in the default schema.
                 $scope.episode.tagging[0] = tagging;
-                var date = _.isDate($scope.meta.review_date) ? moment($scope.meta.review_date) : moment($scope.meta.review_date, 'DD/MM/YYYY');
-                date = date.format('DD/MM/YYYY');
+                var dateStr = $scope.meta.review_date;
+
+                if(_.isDate(dateStr)){
+                    dateStr = moment($scope.meta.review_date).format(DATE_FORMAT);
+                }
                 var message = 'Rejected: ' + episode.demographics[0].name;
-                message += '.\n Patient will come up for OPAT review after ' + date;
+                message += '.\n Patient will come up for OPAT review after ' + dateStr;
                 growl.success(message);
                 $modalInstance.close('discharged');
             });
