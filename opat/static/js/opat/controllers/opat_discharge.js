@@ -8,12 +8,13 @@ controllers.controller(
              Item, CopyToCategory,
              options, episode, tags){
 
+        var DATE_FORMAT = 'DD/MM/YYYY';
         var opat_rejection = $rootScope.fields['opat_rejection'];
 
         $scope.episode = episode;
         $scope.meta = {
             accepted: null,
-            rejection: {date: moment().format('YYYY-MM-DD')}
+            rejection: {date: moment().format(DATE_FORMAT)}
         };
 
         $scope.qc = {
@@ -44,14 +45,14 @@ controllers.controller(
                 return !$scope.qc.fails();
             }
         };
-        
+
         // Put all of our lookuplists in scope.
 	    for (var name in options) {
 		    if (name.indexOf('micro_test') != 0) {
 			    $scope[name + '_list'] = options[name];
 		    };
-	    };        
-        
+	    };
+
         // Make sure that the episode's tagging item is an instance not an object
         $scope.ensure_tagging = function(episode){
             if(!$scope.episode.tagging[0].makeCopy){
@@ -59,15 +60,15 @@ controllers.controller(
             }            return
         };
 
-        // 
+        //
         // This method made more sense when we were storing metadata on a
-        // singleton. now it just returns a new metadata instance. 
-        // 
+        // singleton. now it just returns a new metadata instance.
+        //
         $scope.get_meta = function(){
             return $scope.episode.newItem('opat_meta');
         }
-        
-        // 
+
+        //
         // The patient is accepted onto the OPAT service.
         // We need to update their tagging data.
         $scope.accept = function(){
@@ -89,7 +90,7 @@ controllers.controller(
                     locationdata.opat_referral_consultant = $scope.qc.consultant;
                 }
             }
-            
+
             var saves = [
                 $scope.episode.tagging[0].save(tagging),
                 $scope.episode.location[0].save(locationdata)
@@ -108,13 +109,13 @@ controllers.controller(
 
         $scope.click_reject = function(){
             $scope.meta.accepted = false;
-            $scope.meta.review_date = moment().add(3, 'M')._d;
+            $scope.meta.review_date = moment().add(3, 'M').toDate();
             return
         }
-        // 
+        //
         // The patient is rejected from the OAPT service.
         // Store some extra data.
-        // 
+        //
         $scope.reject = function(){
             var meta = $scope.get_meta();
             var opatmetadata = meta.makeCopy();
@@ -123,10 +124,10 @@ controllers.controller(
 
             $scope.ensure_tagging(episode);
             opatmetadata.review_date = $scope.meta.review_date;
-            
+
             tagging.opat_referrals = false;
-            tagging.opat = false;                       
-            
+            tagging.opat = false;
+
             $q.all([
                 rejection.save($scope.meta.rejection),
                 $scope.episode.tagging[0].save(tagging),
@@ -134,12 +135,15 @@ controllers.controller(
             ]).then(function(){
                 // Doesn't auto update for OPAT as TAGGING is not in the default schema.
                 $scope.episode.tagging[0] = tagging;
-                var date = _.isDate($scope.meta.review_date) ? moment($scope.meta.review_date) : moment($scope.meta.review_date, 'DD/MM/YYYY');
-                date = date.format('DD/MM/YYYY');
+                var dateStr = $scope.meta.review_date;
+
+                if(_.isDate(dateStr)){
+                    dateStr = moment($scope.meta.review_date).format(DATE_FORMAT);
+                }
                 var message = 'Rejected: ' + episode.demographics[0].name;
-                message += '.\n Patient will come up for OPAT review after ' + date;
+                message += '.\n Patient will come up for OPAT review after ' + dateStr;
                 growl.success(message);
-                $modalInstance.close('discharged');                
+                $modalInstance.close('discharged');
             });
 
         };
@@ -147,7 +151,7 @@ controllers.controller(
         //
         // The patient is being removed from the current list because they've
         // switched to oral antibiotics
-        // 
+        //
         $scope.switch_to_oral = function(){
             var meta = $scope.get_meta();
             $scope.ensure_tagging($scope.episode);
@@ -172,7 +176,8 @@ controllers.controller(
             var outcomesdata = {
                 patient_outcome: $scope.meta.patient_outcome,
                 opat_outcome   : $scope.meta.opat_outcome,
-                outcome_stage  : 'Completed Therapy'
+                outcome_stage  : 'Completed Therapy',
+                infective_diagnosis: $scope.meta.infective_diagnosis
             }
 
             // Now let's save
@@ -186,18 +191,18 @@ controllers.controller(
             });
         }
 
-        // 
+        //
         // A patient has completed their OPAT therapy.
-        // 
+        //
         $scope.completed_therapy = function(addendum){
             var meta = $scope.get_meta();
             $scope.ensure_tagging($scope.episode);
             var tagging = $scope.episode.tagging[0].makeCopy();
             tagging.opat_current = false;
             tagging.opat_followup = false;
-            
+
             updatedmeta = meta.makeCopy();
-            
+
             updatedmeta.review_date       = $scope.meta.review_date;
             updatedmeta.treatment_outcome = $scope.meta.outcome;
             updatedmeta.deceased          = $scope.meta.died;
@@ -214,13 +219,14 @@ controllers.controller(
             var outcomesdata = {
                 patient_outcome: $scope.meta.patient_outcome,
                 opat_outcome   : $scope.meta.opat_outcome,
-                outcome_stage  : 'Completed Therapy'
+                outcome_stage  : 'Completed Therapy',
+                infective_diagnosis: $scope.meta.infective_diagnosis
             }
-            
+
             if(addendum){
                 outcomesdata.outcome_stage += addendum;
             }
-            
+
             // Now let's save
             $q.all([
                 meta.save(updatedmeta),
@@ -237,13 +243,13 @@ controllers.controller(
         // The patient is being removed from the follow up list because they're
         // going back to IV
         //
-        // This means that we create a whole new OPAT episode for them ! 
-        // 
+        // This means that we create a whole new OPAT episode for them !
+        //
         $scope.back_to_iv = function(){
             var meta = $scope.get_meta();
             $scope.ensure_tagging($scope.episode);
             var tagging = $scope.episode.tagging[0].makeCopy();
-            
+
             tagging.opat_current = false;
             tagging.opat_followup = false;
             updatedmeta = meta.makeCopy();
@@ -268,14 +274,13 @@ controllers.controller(
                         episode.location[0].save(locationdata)
                     ]).then(function(){
                         growl.success(episode.demographics[0].name + ' has been moved back to OPAT referrals');
-                        $modalInstance.close('discharged');                        
+                        $modalInstance.close('discharged');
                     })
                 });
             });
-            
         }
-        
-        
+
+
         // Let's have a nice way to kill the modal.
         $scope.cancel = function() {
 	        $modalInstance.close('cancel');
