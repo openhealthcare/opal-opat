@@ -56,7 +56,7 @@ class OpatPlugin(plugins.OpalPlugin):
             'opat': {
                 'default': flows
             },
-            'OPAT': flowso
+            'OPAT': flows
         }
 
     def roles(self, user):
