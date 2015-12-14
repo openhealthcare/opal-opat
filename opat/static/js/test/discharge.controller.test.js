@@ -127,7 +127,7 @@ describe('OPATDischargeCtrl', function (){
             $scope.meta = metavars;
             var meta2 = angular.copy(metavars);
             meta2.episode_id = 33;
-            meta2.review_date = '1999-12-22';
+            meta2.review_date = '22/12/1999';
             meta2.treatment_outcome = 'death';
             meta2.deceased = true;
             delete meta2['outcome'];
@@ -141,7 +141,7 @@ describe('OPATDischargeCtrl', function (){
             $httpBackend.expectPUT('/api/v0.1/tagging/33/', taggingdata).respond('Yes');
             // Should set the discharge date
             var episode_data = {
-                discharge_date: moment().format('YYYY-MM-DD'),
+                discharge_date: moment().format('DD/MM/YYYY'),
                 id: 33
             }
 
