@@ -1,7 +1,7 @@
 """
 Plugin definition for the opat OPAL plugin
 """
-from opal.core import plugins
+from opal.core import episodes, plugins
 from opat.urls import urlpatterns
 
 class OpatPlugin(plugins.OpalPlugin):
@@ -42,19 +42,21 @@ class OpatPlugin(plugins.OpalPlugin):
         """
         Return any custom flows that our plugin may define
         """
+        flows = {
+            'enter': {
+                'controller': 'OPATReferralCtrl',
+                'template'  : '/opat/templates/modals/opat_referral.html/'
+            },
+            'exit': {
+                'controller': 'OPATDischargeCtrl',
+                'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
+            }
+        }
         return {
             'opat': {
-                'default': {
-                    'enter': {
-                        'controller': 'OPATReferralCtrl',
-                        'template'  : '/opat/templates/modals/opat_referral.html/'
-                    },
-                    'exit': {
-                        'controller': 'OPATDischargeCtrl',
-                        'template'  : '/opat/templates/modals/discharge_opat_episode.html/'
-                    }
-                }
-            },            
+                'default': flows
+            },
+            'OPAT': flows
         }
 
     def roles(self, user):
@@ -64,5 +66,9 @@ class OpatPlugin(plugins.OpalPlugin):
         """
         return {}
 
-
+    
 plugins.register(OpatPlugin)
+
+class OPATEpisode(episodes.EpisodeType):
+    name            = 'OPAT'
+    detail_template = 'detail/opat2.html'

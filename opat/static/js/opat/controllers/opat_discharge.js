@@ -133,6 +133,10 @@ controllers.controller(
                 $scope.episode.tagging[0].save(tagging),
                 meta.save(opatmetadata)
             ]).then(function(){
+                // 
+                // This comment edited to add (DM): I have literally no idea what the next
+                // comment means :(
+                // 
                 // Doesn't auto update for OPAT as TAGGING is not in the default schema.
                 $scope.episode.tagging[0] = tagging;
                 var dateStr = $scope.meta.review_date;

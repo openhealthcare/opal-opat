@@ -5,7 +5,7 @@ controllers.controller(
     'OPATReferralCtrl',
     function($scope, $modalInstance, $modal, $rootScope, $q,
              growl,
-             schema, options,
+             options,
              Episode){
 
         $scope.model = {
@@ -20,7 +20,7 @@ controllers.controller(
         //
         $scope.tag_and_close = function(episode){
             if(!episode.newItem){
-                episode = new Episode(episode, schema);
+                episode = new Episode(episode);
             };
             if(!episode.tagging[0].makeCopy){
                 episode.tagging[0] = episode.newItem('tagging');
@@ -96,7 +96,6 @@ controllers.controller(
 				templateUrl: '/opat/templates/modals/add_episode.html/',
 				controller: 'AddEpisodeCtrl',
 				resolve: {
-					schema: function() { return schema; },
 					options: function() { return options; },
 					demographics: function() {
 						return { hospital_number: $scope.model.hospital_number }
@@ -119,7 +118,7 @@ controllers.controller(
             var actually_make_new_episode = function(){
                 // Offer to import the data from this episode.
 				for (var eix in patient.episodes) {
-					patient.episodes[eix] = new Episode(patient.episodes[eix], schema);
+					patient.episodes[eix] = new Episode(patient.episodes[eix]);
 				};
 				modal = $modal.open({
 					templateUrl: '/templates/modals/copy_to_category.html/',
@@ -186,7 +185,6 @@ controllers.controller(
 				templateUrl: '/opat/templates/modals/add_episode.html/',
 				controller: 'AddEpisodeCtrl',
 				resolve: {
-					schema: function() { return schema; },
 					options: function() { return options; },
 					demographics: function() { return demographics; }
 				}
