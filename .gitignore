@@ -2,6 +2,7 @@
 *.pyc
 static/*
 /opal/local_settings.py
+npm-debug.log
 .coverage
 htmlcov
 libpeerconnection.log
