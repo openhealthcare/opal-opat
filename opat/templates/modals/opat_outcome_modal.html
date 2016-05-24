@@ -2,7 +2,7 @@
 {% load forms %}
 {% block modal_body %}
   <form class="form-horizontal">
-    <input type="hidden" ng-init="editing.outcome_stage = 'OPAT Review'" ng-model="editing.outcome_stage" />
+    <input type="hidden" ng-init="editing.outcome_stage = editing.outcome_stage || 'OPAT Review'" ng-model="editing.outcome_stage" />
 
 {% select label="Patient Outcome" model="editing.patient_outcome" lookuplist="['Cure', 'Improved', 'Failure']" help="opat/_patient_outcome_help.html" %}
 {% select label="Opat Outcome" model="editing.opat_outcome" lookuplist="['Success', 'Partial Success', 'Failure of OPAT', 'Intermidiate Outcome']" help="opat/_opat_outcome_help.html" %}
