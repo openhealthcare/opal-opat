@@ -181,11 +181,7 @@ controllers.controller(
         //
         $scope.add_for_patient = function(patient){
             var demographics = patient.demographics[0];
-            if(demographics.date_of_birth){
-                var dob = moment(demographics.date_of_birth, 'YYYY-MM-DD')
-                    .format('DD/MM/YYYY');
-				demographics.date_of_birth = dob;
-            }
+
 			modal = $modal.open({
 				templateUrl: '/opat/templates/modals/add_episode.html/',
 				controller: 'AddEpisodeCtrl',
